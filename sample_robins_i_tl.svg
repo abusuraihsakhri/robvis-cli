@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 611 672" width="611" height="672" style="background-color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">
+
+    <style>
+      .title { font-size: 16px; font-weight: 700; fill: #1a1a1a; text-anchor: middle; }
+      .header-label { font-size: 12px; font-weight: 600; fill: #333333; text-anchor: middle; }
+      .study-label { font-size: 12px; font-weight: 500; fill: #222222; }
+      .symbol { font-size: 14px; font-weight: 900; fill: #ffffff; text-anchor: middle; dominant-baseline: central; font-family: monospace, sans-serif; }
+      .legend-title { font-size: 13px; font-weight: 700; fill: #222222; }
+      .legend-item { font-size: 11.5px; font-weight: 400; fill: #333333; }
+      .grid-line { stroke: #eaeaea; stroke-width: 1; }
+      .traffic-circle { transition: transform 0.2s; cursor: pointer; }
+      .traffic-circle:hover { stroke: #222222; stroke-width: 2; }
+    </style>
+    
+<text x="305.5" y="32" class="title">ROBINS-I: Non-Randomized Studies of Minimally Invasive Surgery</text>
+<text x="241.0" y="65" class="header-label">D1</text>
+<text x="285.0" y="65" class="header-label">D2</text>
+<text x="329.0" y="65" class="header-label">D3</text>
+<text x="373.0" y="65" class="header-label">D4</text>
+<text x="417.0" y="65" class="header-label">D5</text>
+<text x="461.0" y="65" class="header-label">D6</text>
+<text x="505.0" y="65" class="header-label">D7</text>
+<text x="549.0" y="65" class="header-label">Overall</text>
+<line x1="20" y1="116" x2="591" y2="116" class="grid-line" />
+<text x="24" y="102.0" class="study-label">Armstrong et al. 2021</text>
+<circle cx="241.0" cy="98.0" r="14" fill="#fdbf6f" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Armstrong et al. 2021 | D1: Bias due to confounding -> Some concerns</title></circle>
+<text x="241.0" y="98.0" class="symbol" pointer-events="none">?</text>
+<circle cx="285.0" cy="98.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Armstrong et al. 2021 | D2: Bias in selection of participants -> Low</title></circle>
+<text x="285.0" y="98.0" class="symbol" pointer-events="none">+</text>
+<circle cx="329.0" cy="98.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Armstrong et al. 2021 | D3: Bias in classification of interventions -> Low</title></circle>
+<text x="329.0" y="98.0" class="symbol" pointer-events="none">+</text>
+<circle cx="373.0" cy="98.0" r="14" fill="#fdbf6f" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Armstrong et al. 2021 | D4: Bias due to deviations from intended interventions -> Some concerns</title></circle>
+<text x="373.0" y="98.0" class="symbol" pointer-events="none">?</text>
+<circle cx="417.0" cy="98.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Armstrong et al. 2021 | D5: Bias due to missing data -> Low</title></circle>
+<text x="417.0" y="98.0" class="symbol" pointer-events="none">+</text>
+<circle cx="461.0" cy="98.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Armstrong et al. 2021 | D6: Bias in measurement of outcomes -> Low</title></circle>
+<text x="461.0" y="98.0" class="symbol" pointer-events="none">+</text>
+<circle cx="505.0" cy="98.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Armstrong et al. 2021 | D7: Bias in selection of the reported result -> Low</title></circle>
+<text x="505.0" y="98.0" class="symbol" pointer-events="none">+</text>
+<circle cx="549.0" cy="98.0" r="14" fill="#fdbf6f" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Armstrong et al. 2021 | Overall Risk -> Some concerns</title></circle>
+<text x="549.0" y="98.0" class="symbol" pointer-events="none">?</text>
+<rect x="20" y="116" width="571" height="36" fill="#f9fafb" />
+<line x1="20" y1="152" x2="591" y2="152" class="grid-line" />
+<text x="24" y="138.0" class="study-label">Bautista et al. 2020</text>
+<circle cx="241.0" cy="134.0" r="14" fill="#e41a1c" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Bautista et al. 2020 | D1: Bias due to confounding -> High</title></circle>
+<text x="241.0" y="134.0" class="symbol" pointer-events="none">−</text>
+<circle cx="285.0" cy="134.0" r="14" fill="#fdbf6f" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Bautista et al. 2020 | D2: Bias in selection of participants -> Some concerns</title></circle>
+<text x="285.0" y="134.0" class="symbol" pointer-events="none">?</text>
+<circle cx="329.0" cy="134.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Bautista et al. 2020 | D3: Bias in classification of interventions -> Low</title></circle>
+<text x="329.0" y="134.0" class="symbol" pointer-events="none">+</text>
+<circle cx="373.0" cy="134.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Bautista et al. 2020 | D4: Bias due to deviations from intended interventions -> Low</title></circle>
+<text x="373.0" y="134.0" class="symbol" pointer-events="none">+</text>
+<circle cx="417.0" cy="134.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Bautista et al. 2020 | D5: Bias due to missing data -> Low</title></circle>
+<text x="417.0" y="134.0" class="symbol" pointer-events="none">+</text>
+<circle cx="461.0" cy="134.0" r="14" fill="#fdbf6f" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Bautista et al. 2020 | D6: Bias in measurement of outcomes -> Some concerns</title></circle>
+<text x="461.0" y="134.0" class="symbol" pointer-events="none">?</text>
+<circle cx="505.0" cy="134.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Bautista et al. 2020 | D7: Bias in selection of the reported result -> Low</title></circle>
+<text x="505.0" y="134.0" class="symbol" pointer-events="none">+</text>
+<circle cx="549.0" cy="134.0" r="14" fill="#e41a1c" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Bautista et al. 2020 | Overall Risk -> High</title></circle>
+<text x="549.0" y="134.0" class="symbol" pointer-events="none">−</text>
+<line x1="20" y1="188" x2="591" y2="188" class="grid-line" />
+<text x="24" y="174.0" class="study-label">Carvalho et al. 2022</text>
+<circle cx="241.0" cy="170.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Carvalho et al. 2022 | D1: Bias due to confounding -> Low</title></circle>
+<text x="241.0" y="170.0" class="symbol" pointer-events="none">+</text>
+<circle cx="285.0" cy="170.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Carvalho et al. 2022 | D2: Bias in selection of participants -> Low</title></circle>
+<text x="285.0" y="170.0" class="symbol" pointer-events="none">+</text>
+<circle cx="329.0" cy="170.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Carvalho et al. 2022 | D3: Bias in classification of interventions -> Low</title></circle>
+<text x="329.0" y="170.0" class="symbol" pointer-events="none">+</text>
+<circle cx="373.0" cy="170.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Carvalho et al. 2022 | D4: Bias due to deviations from intended interventions -> Low</title></circle>
+<text x="373.0" y="170.0" class="symbol" pointer-events="none">+</text>
+<circle cx="417.0" cy="170.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Carvalho et al. 2022 | D5: Bias due to missing data -> Low</title></circle>
+<text x="417.0" y="170.0" class="symbol" pointer-events="none">+</text>
+<circle cx="461.0" cy="170.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Carvalho et al. 2022 | D6: Bias in measurement of outcomes -> Low</title></circle>
+<text x="461.0" y="170.0" class="symbol" pointer-events="none">+</text>
+<circle cx="505.0" cy="170.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Carvalho et al. 2022 | D7: Bias in selection of the reported result -> Low</title></circle>
+<text x="505.0" y="170.0" class="symbol" pointer-events="none">+</text>
+<circle cx="549.0" cy="170.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Carvalho et al. 2022 | Overall Risk -> Low</title></circle>
+<text x="549.0" y="170.0" class="symbol" pointer-events="none">+</text>
+<rect x="20" y="188" width="571" height="36" fill="#f9fafb" />
+<line x1="20" y1="224" x2="591" y2="224" class="grid-line" />
+<text x="24" y="210.0" class="study-label">Davenport et al. 2019</text>
+<circle cx="241.0" cy="206.0" r="14" fill="#6a3d9a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Davenport et al. 2019 | D1: Bias due to confounding -> Critical</title></circle>
+<text x="241.0" y="206.0" class="symbol" pointer-events="none">✕</text>
+<circle cx="285.0" cy="206.0" r="14" fill="#e41a1c" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Davenport et al. 2019 | D2: Bias in selection of participants -> High</title></circle>
+<text x="285.0" y="206.0" class="symbol" pointer-events="none">−</text>
+<circle cx="329.0" cy="206.0" r="14" fill="#fdbf6f" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Davenport et al. 2019 | D3: Bias in classification of interventions -> Some concerns</title></circle>
+<text x="329.0" y="206.0" class="symbol" pointer-events="none">?</text>
+<circle cx="373.0" cy="206.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Davenport et al. 2019 | D4: Bias due to deviations from intended interventions -> Low</title></circle>
+<text x="373.0" y="206.0" class="symbol" pointer-events="none">+</text>
+<circle cx="417.0" cy="206.0" r="14" fill="#e41a1c" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Davenport et al. 2019 | D5: Bias due to missing data -> High</title></circle>
+<text x="417.0" y="206.0" class="symbol" pointer-events="none">−</text>
+<circle cx="461.0" cy="206.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Davenport et al. 2019 | D6: Bias in measurement of outcomes -> Low</title></circle>
+<text x="461.0" y="206.0" class="symbol" pointer-events="none">+</text>
+<circle cx="505.0" cy="206.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Davenport et al. 2019 | D7: Bias in selection of the reported result -> Low</title></circle>
+<text x="505.0" y="206.0" class="symbol" pointer-events="none">+</text>
+<circle cx="549.0" cy="206.0" r="14" fill="#6a3d9a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Davenport et al. 2019 | Overall Risk -> Critical</title></circle>
+<text x="549.0" y="206.0" class="symbol" pointer-events="none">✕</text>
+<line x1="20" y1="260" x2="591" y2="260" class="grid-line" />
+<text x="24" y="246.0" class="study-label">Eberhardt et al. 2023</text>
+<circle cx="241.0" cy="242.0" r="14" fill="#fdbf6f" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Eberhardt et al. 2023 | D1: Bias due to confounding -> Some concerns</title></circle>
+<text x="241.0" y="242.0" class="symbol" pointer-events="none">?</text>
+<circle cx="285.0" cy="242.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Eberhardt et al. 2023 | D2: Bias in selection of participants -> Low</title></circle>
+<text x="285.0" y="242.0" class="symbol" pointer-events="none">+</text>
+<circle cx="329.0" cy="242.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Eberhardt et al. 2023 | D3: Bias in classification of interventions -> Low</title></circle>
+<text x="329.0" y="242.0" class="symbol" pointer-events="none">+</text>
+<circle cx="373.0" cy="242.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Eberhardt et al. 2023 | D4: Bias due to deviations from intended interventions -> Low</title></circle>
+<text x="373.0" y="242.0" class="symbol" pointer-events="none">+</text>
+<circle cx="417.0" cy="242.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Eberhardt et al. 2023 | D5: Bias due to missing data -> Low</title></circle>
+<text x="417.0" y="242.0" class="symbol" pointer-events="none">+</text>
+<circle cx="461.0" cy="242.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Eberhardt et al. 2023 | D6: Bias in measurement of outcomes -> Low</title></circle>
+<text x="461.0" y="242.0" class="symbol" pointer-events="none">+</text>
+<circle cx="505.0" cy="242.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Eberhardt et al. 2023 | D7: Bias in selection of the reported result -> Low</title></circle>
+<text x="505.0" y="242.0" class="symbol" pointer-events="none">+</text>
+<circle cx="549.0" cy="242.0" r="14" fill="#fdbf6f" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Eberhardt et al. 2023 | Overall Risk -> Some concerns</title></circle>
+<text x="549.0" y="242.0" class="symbol" pointer-events="none">?</text>
+<rect x="20" y="260" width="571" height="36" fill="#f9fafb" />
+<line x1="20" y1="296" x2="591" y2="296" class="grid-line" />
+<text x="24" y="282.0" class="study-label">Fischer &amp; Weiss 2020</text>
+<circle cx="241.0" cy="278.0" r="14" fill="#e41a1c" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Fischer &amp; Weiss 2020 | D1: Bias due to confounding -> High</title></circle>
+<text x="241.0" y="278.0" class="symbol" pointer-events="none">−</text>
+<circle cx="285.0" cy="278.0" r="14" fill="#e41a1c" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Fischer &amp; Weiss 2020 | D2: Bias in selection of participants -> High</title></circle>
+<text x="285.0" y="278.0" class="symbol" pointer-events="none">−</text>
+<circle cx="329.0" cy="278.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Fischer &amp; Weiss 2020 | D3: Bias in classification of interventions -> Low</title></circle>
+<text x="329.0" y="278.0" class="symbol" pointer-events="none">+</text>
+<circle cx="373.0" cy="278.0" r="14" fill="#fdbf6f" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Fischer &amp; Weiss 2020 | D4: Bias due to deviations from intended interventions -> Some concerns</title></circle>
+<text x="373.0" y="278.0" class="symbol" pointer-events="none">?</text>
+<circle cx="417.0" cy="278.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Fischer &amp; Weiss 2020 | D5: Bias due to missing data -> Low</title></circle>
+<text x="417.0" y="278.0" class="symbol" pointer-events="none">+</text>
+<circle cx="461.0" cy="278.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Fischer &amp; Weiss 2020 | D6: Bias in measurement of outcomes -> Low</title></circle>
+<text x="461.0" y="278.0" class="symbol" pointer-events="none">+</text>
+<circle cx="505.0" cy="278.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Fischer &amp; Weiss 2020 | D7: Bias in selection of the reported result -> Low</title></circle>
+<text x="505.0" y="278.0" class="symbol" pointer-events="none">+</text>
+<circle cx="549.0" cy="278.0" r="14" fill="#e41a1c" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Fischer &amp; Weiss 2020 | Overall Risk -> High</title></circle>
+<text x="549.0" y="278.0" class="symbol" pointer-events="none">−</text>
+<line x1="20" y1="332" x2="591" y2="332" class="grid-line" />
+<text x="24" y="318.0" class="study-label">Gupta &amp; Nair 2022</text>
+<circle cx="241.0" cy="314.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Gupta &amp; Nair 2022 | D1: Bias due to confounding -> Low</title></circle>
+<text x="241.0" y="314.0" class="symbol" pointer-events="none">+</text>
+<circle cx="285.0" cy="314.0" r="14" fill="#fdbf6f" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Gupta &amp; Nair 2022 | D2: Bias in selection of participants -> Some concerns</title></circle>
+<text x="285.0" y="314.0" class="symbol" pointer-events="none">?</text>
+<circle cx="329.0" cy="314.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Gupta &amp; Nair 2022 | D3: Bias in classification of interventions -> Low</title></circle>
+<text x="329.0" y="314.0" class="symbol" pointer-events="none">+</text>
+<circle cx="373.0" cy="314.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Gupta &amp; Nair 2022 | D4: Bias due to deviations from intended interventions -> Low</title></circle>
+<text x="373.0" y="314.0" class="symbol" pointer-events="none">+</text>
+<circle cx="417.0" cy="314.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Gupta &amp; Nair 2022 | D5: Bias due to missing data -> Low</title></circle>
+<text x="417.0" y="314.0" class="symbol" pointer-events="none">+</text>
+<circle cx="461.0" cy="314.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Gupta &amp; Nair 2022 | D6: Bias in measurement of outcomes -> Low</title></circle>
+<text x="461.0" y="314.0" class="symbol" pointer-events="none">+</text>
+<circle cx="505.0" cy="314.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Gupta &amp; Nair 2022 | D7: Bias in selection of the reported result -> Low</title></circle>
+<text x="505.0" y="314.0" class="symbol" pointer-events="none">+</text>
+<circle cx="549.0" cy="314.0" r="14" fill="#fdbf6f" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Gupta &amp; Nair 2022 | Overall Risk -> Some concerns</title></circle>
+<text x="549.0" y="314.0" class="symbol" pointer-events="none">?</text>
+<rect x="20" y="332" width="571" height="36" fill="#f9fafb" />
+<line x1="20" y1="368" x2="591" y2="368" class="grid-line" />
+<text x="24" y="354.0" class="study-label">Hansen et al. 2024</text>
+<circle cx="241.0" cy="350.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Hansen et al. 2024 | D1: Bias due to confounding -> Low</title></circle>
+<text x="241.0" y="350.0" class="symbol" pointer-events="none">+</text>
+<circle cx="285.0" cy="350.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Hansen et al. 2024 | D2: Bias in selection of participants -> Low</title></circle>
+<text x="285.0" y="350.0" class="symbol" pointer-events="none">+</text>
+<circle cx="329.0" cy="350.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Hansen et al. 2024 | D3: Bias in classification of interventions -> Low</title></circle>
+<text x="329.0" y="350.0" class="symbol" pointer-events="none">+</text>
+<circle cx="373.0" cy="350.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Hansen et al. 2024 | D4: Bias due to deviations from intended interventions -> Low</title></circle>
+<text x="373.0" y="350.0" class="symbol" pointer-events="none">+</text>
+<circle cx="417.0" cy="350.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Hansen et al. 2024 | D5: Bias due to missing data -> Low</title></circle>
+<text x="417.0" y="350.0" class="symbol" pointer-events="none">+</text>
+<circle cx="461.0" cy="350.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Hansen et al. 2024 | D6: Bias in measurement of outcomes -> Low</title></circle>
+<text x="461.0" y="350.0" class="symbol" pointer-events="none">+</text>
+<circle cx="505.0" cy="350.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Hansen et al. 2024 | D7: Bias in selection of the reported result -> Low</title></circle>
+<text x="505.0" y="350.0" class="symbol" pointer-events="none">+</text>
+<circle cx="549.0" cy="350.0" r="14" fill="#4daf4a" stroke="#ffffff" stroke-width="1.5" class="traffic-circle"><title>Hansen et al. 2024 | Overall Risk -> Low</title></circle>
+<text x="549.0" y="350.0" class="symbol" pointer-events="none">+</text>
+<line x1="20" y1="393" x2="591" y2="393" stroke="#cccccc" stroke-width="1.5" />
+<text x="24" y="419" class="legend-title">Judgments:</text>
+<circle cx="110" cy="415" r="8" fill="#4daf4a" stroke="#ffffff" stroke-width="1"/>
+<text x="110" y="415" class="symbol" style="font-size:9px;" pointer-events="none">+</text>
+<text x="124" y="419" class="legend-item">Low risk</text>
+<circle cx="214" cy="415" r="8" fill="#fdbf6f" stroke="#ffffff" stroke-width="1"/>
+<text x="214" y="415" class="symbol" style="font-size:9px;" pointer-events="none">?</text>
+<text x="228" y="419" class="legend-item">Some concerns</text>
+<circle cx="358" cy="415" r="8" fill="#e41a1c" stroke="#ffffff" stroke-width="1"/>
+<text x="358" y="415" class="symbol" style="font-size:9px;" pointer-events="none">−</text>
+<text x="372" y="419" class="legend-item">High risk</text>
+<circle cx="470" cy="415" r="8" fill="#6a3d9a" stroke="#ffffff" stroke-width="1"/>
+<text x="470" y="415" class="symbol" style="font-size:9px;" pointer-events="none">✕</text>
+<text x="484" y="419" class="legend-item">Critical risk</text>
+<circle cx="614" cy="415" r="8" fill="#cccccc" stroke="#ffffff" stroke-width="1"/>
+<text x="628" y="419" class="legend-item">No info</text>
+<text x="24" y="447" class="legend-title">Domains (ROBINS_I):</text>
+<text x="28" y="467" class="legend-item"><tspan font-weight="600">D1:</tspan> Bias due to confounding</text>
+<text x="28" y="487" class="legend-item"><tspan font-weight="600">D2:</tspan> Bias in selection of participants</text>
+<text x="28" y="507" class="legend-item"><tspan font-weight="600">D3:</tspan> Bias in classification of interventions</text>
+<text x="28" y="527" class="legend-item"><tspan font-weight="600">D4:</tspan> Bias due to deviations from intended interventions</text>
+<text x="28" y="547" class="legend-item"><tspan font-weight="600">D5:</tspan> Bias due to missing data</text>
+<text x="28" y="567" class="legend-item"><tspan font-weight="600">D6:</tspan> Bias in measurement of outcomes</text>
+<text x="28" y="587" class="legend-item"><tspan font-weight="600">D7:</tspan> Bias in selection of the reported result</text>
+</svg>
