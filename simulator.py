@@ -1,9 +1,14 @@
 """
 Distributed Component High-Throughput Traffic & Stress Testing Simulator for Robvis Cli.
 """
+import os
 import time
 import random
 import sys
+
+# Set default audit key for simulator if not set
+os.environ.setdefault("AUDIT_SECRET_KEY", "simulator-audit-key-for-testing-only")
+
 from agents.models import SystemTaskPayload
 from agents.supervisor import SystemSupervisor
 from agents.base import PHIGuard, SecurityException, AuditLogger
@@ -50,7 +55,7 @@ def run_simulation(iterations: int = 100):
 
     elapsed = time.time() - start_time
     print("\n" + "=" * 70)
-    print(f"  SIMULATION SUMMARY FOR ROBVIS CLI")
+    print("  SIMULATION SUMMARY FOR ROBVIS CLI")
     print("=" * 70)
     print(f"  Total Tasks Processed:     {iterations}")
     print(f"  Elapsed Time:              {elapsed:.3f} seconds ({iterations/max(0.001, elapsed):.1f} tasks/sec)")

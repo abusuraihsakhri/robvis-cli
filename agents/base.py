@@ -10,7 +10,6 @@ import hmac
 import hashlib
 from typing import Dict, Any, List, Optional
 from datetime import datetime, timezone
-from pydantic import BaseModel, Field
 
 PHI_PATTERNS = [
     re.compile(r"\b(?:MRN|mrn)[:#\s-]*\d{4,10}\b", re.IGNORECASE),
@@ -57,7 +56,15 @@ class PHIGuard:
 class AuditTrail:
     """Cryptographic Tamper-Evident HMAC-SHA256 Audit Trail."""
     def __init__(self, secret_key: Optional[str] = None):
-        self.secret_key = (secret_key or os.getenv("AUDIT_SECRET_KEY", "robvis-cli-master-audit-key-2026")).encode("utf-8")
+        key = secret_key or os.getenv("AUDIT_SECRET_KEY")
+        if not key:
+            raise SecurityException(
+                "AUDIT_SECRET_KEY environment variable must be set for audit trail security. "
+                "Generate a secure key with: python -c \"import secrets; print(secrets.token_hex(32))\""
+            )
+        if len(key) < 16:
+            raise SecurityException("AUDIT_SECRET_KEY must be at least 16 characters long.")
+        self.secret_key = key.encode("utf-8")
         self.logs: List[Dict[str, Any]] = []
 
     def log(self, actor: str, actor_tier: str, event_type: str, details: Dict[str, Any]) -> Dict[str, Any]:

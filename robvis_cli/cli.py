@@ -4,10 +4,38 @@ Command Line Interface for robvis-cli.
 
 import argparse
 import sys
-import os
+from pathlib import Path
 from .models import ToolType
 from .parser import parse_rob_csv
 from .renderer_svg import render_traffic_light_svg, render_summary_bar_svg
+
+
+def _validate_input_file(path: str) -> str:
+    """Validate input file exists and prevent path traversal."""
+    # Resolve to absolute path to prevent traversal
+    resolved = Path(path).resolve()
+
+    # Check for path traversal - ensure the resolved path is within allowed directories
+    # Allow any path that exists, but block suspicious patterns
+    suspicious_patterns = ["..", "~", "//"]
+    for pattern in suspicious_patterns:
+        if pattern in path and pattern != "..":  # ".." is handled by resolve()
+            raise ValueError(f"Invalid file path: contains suspicious pattern '{pattern}'")
+
+    if not resolved.exists():
+        raise FileNotFoundError(f"Input file not found: {path}")
+    if not resolved.is_file():
+        raise ValueError(f"Input path is not a file: {path}")
+    return str(resolved)
+
+
+def _validate_output_path(path: str) -> str:
+    """Validate output file path and ensure directory exists."""
+    resolved = Path(path).resolve()
+    parent = resolved.parent
+    if not parent.exists():
+        raise FileNotFoundError(f"Output directory does not exist: {parent}")
+    return str(resolved)
 
 
 SAMPLE_ROB2_CSV = """Study,D1,D2,D3,D4,D5,Overall,Weight
@@ -70,23 +98,32 @@ def main(argv=None):
     if args.command == "sample-csv":
         sample_text = SAMPLE_ROB2_CSV if args.tool == "rob2" else SAMPLE_ROBINS_I_CSV
         if args.output:
-            with open(args.output, "w", encoding="utf-8") as f:
+            output_path = _validate_output_path(args.output)
+            with open(output_path, "w", encoding="utf-8") as f:
                 f.write(sample_text)
-            print(f"Sample {args.tool.upper()} CSV written to: {args.output}")
+            print(f"Sample {args.tool.upper()} CSV written to: {output_path}")
         else:
             sys.stdout.write(sample_text)
         return 0
 
     tool_enum = ToolType[args.tool] if hasattr(args, "tool") and args.tool else None
 
+    # Validate input file for commands that require it
+    if args.command in ("validate", "traffic-light", "summary"):
+        try:
+            input_path = _validate_input_file(args.input)
+        except (FileNotFoundError, ValueError) as e:
+            print(f"Input validation error: {e}", file=sys.stderr)
+            return 1
+
     if args.command == "validate":
         try:
-            meta = parse_rob_csv(args.input, tool_type=tool_enum)
-            print(f"Validation SUCCESS for: {args.input}")
+            meta = parse_rob_csv(input_path, tool_type=tool_enum)
+            print(f"Validation SUCCESS for: {input_path}")
             print(f"  Tool Detected: {meta.tool_type.value}")
             print(f"  Studies: {len(meta.assessments)}")
             print(f"  Domains: {len(meta.domains)} ({', '.join(meta.domain_keys())})")
-            
+
             high_count = sum(1 for a in meta.assessments if a.overall.name in ("HIGH", "CRITICAL"))
             low_count = sum(1 for a in meta.assessments if a.overall.name == "LOW")
             some_count = sum(1 for a in meta.assessments if a.overall.name == "SOME_CONCERNS")
@@ -97,28 +134,30 @@ def main(argv=None):
             return 1
 
     if args.command == "traffic-light":
-        meta = parse_rob_csv(args.input, tool_type=tool_enum)
+        meta = parse_rob_csv(input_path, tool_type=tool_enum)
         svg_content = render_traffic_light_svg(
             meta=meta,
             title=args.title,
             show_symbols=not args.no_symbols,
             show_tooltips=not args.no_tooltips,
         )
-        with open(args.output, "w", encoding="utf-8") as f:
+        output_path = _validate_output_path(args.output)
+        with open(output_path, "w", encoding="utf-8") as f:
             f.write(svg_content)
-        print(f"Traffic light plot successfully created -> {args.output} ({len(meta.assessments)} studies, {len(meta.domains)} domains)")
+        print(f"Traffic light plot successfully created -> {output_path} ({len(meta.assessments)} studies, {len(meta.domains)} domains)")
         return 0
 
     if args.command == "summary":
-        meta = parse_rob_csv(args.input, tool_type=tool_enum)
+        meta = parse_rob_csv(input_path, tool_type=tool_enum)
         svg_content = render_summary_bar_svg(
             meta=meta,
             title=args.title,
             weighted=args.weighted,
         )
-        with open(args.output, "w", encoding="utf-8") as f:
+        output_path = _validate_output_path(args.output)
+        with open(output_path, "w", encoding="utf-8") as f:
             f.write(svg_content)
-        print(f"Summary bar plot successfully created -> {args.output} ({'weighted' if args.weighted else 'unweighted'})")
+        print(f"Summary bar plot successfully created -> {output_path} ({'weighted' if args.weighted else 'unweighted'})")
         return 0
 
     return 0

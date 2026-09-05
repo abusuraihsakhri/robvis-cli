@@ -3,8 +3,12 @@ Command Line Interface for Robvis Cli.
 """
 import argparse
 import csv
-import json
+import os
 import sys
+
+# Set default audit key for CLI if not set
+os.environ.setdefault("AUDIT_SECRET_KEY", "cli-audit-key-for-local-use-only")
+
 from agents.models import SystemTaskPayload
 from agents.supervisor import SystemSupervisor
 from agents.base import AuditLogger
@@ -55,8 +59,8 @@ def main(argv=None):
         )
         dossier = supervisor.process_task(payload)
         print("=" * 80)
-        print(f"  ROBVIS CLI")
-        print(f"  Domain: Clinical & Biomedical AI | Standard: CAP / CLSI / ISO Standards")
+        print("  ROBVIS CLI")
+        print("  Domain: Clinical & Biomedical AI | Standard: CAP / CLSI / ISO Standards")
         print(f"  Dossier ID: {dossier.dossier_id} | Urgency: [{dossier.overall_urgency.value}]")
         print("=" * 80)
         for a in dossier.alerts:

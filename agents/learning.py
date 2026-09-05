@@ -1,9 +1,8 @@
 """
 Autonomous Bayesian Calibration & Active Learning Feedback Engine for robvis-cli.
 """
-import math
-from typing import Dict, Any, List, Optional
-from pydantic import BaseModel, Field
+from typing import Dict, Any, List
+from pydantic import BaseModel
 
 class WorkerPerformanceMetric(BaseModel):
     worker_name: str

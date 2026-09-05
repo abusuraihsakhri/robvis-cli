@@ -6,7 +6,7 @@ Generates:
 """
 
 import html
-from typing import Dict, List, Optional
+from typing import Dict
 from .models import Judgment, MetaAssessment
 
 

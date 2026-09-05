@@ -17,7 +17,16 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Visualization",
 ]
 requires-python = ">=3.9"
-dependencies = []
+dependencies = [
+    "pydantic>=2.0",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]
 
 [project.scripts]
 robvis = "robvis_cli.cli:main"
