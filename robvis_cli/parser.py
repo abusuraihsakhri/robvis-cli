@@ -131,6 +131,12 @@ def parse_rob_csv(
         else:
             tool_type = ToolType.CUSTOM
 
+    expected_counts = {ToolType.ROB2: 5, ToolType.ROBINS_I: 7, ToolType.QUADAS_2: 4}
+    if tool_type in expected_counts and num_domains != expected_counts[tool_type]:
+        raise ValueError(
+            f"{tool_type.value} expects {expected_counts[tool_type]} domains, got {num_domains}"
+        )
+
     domains_catalog: List[Tuple[str, str]] = []
     if tool_type == ToolType.ROB2 and num_domains == 5:
         domains_catalog = list(ROB2_DOMAINS)
@@ -168,6 +174,10 @@ def parse_rob_csv(
                     else:
                         j = Judgment.from_str(cell_val)
                 else:
+                    if tool_type == ToolType.ROB2 and cell_val.strip().lower() in (
+                        "moderate", "serious", "critical", "m", "crit"
+                    ):
+                        raise ValueError(f"'{cell_val}' is not a RoB 2 judgment")
                     j = Judgment.from_str(cell_val)
             except ValueError as e:
                 raise ValueError(f"Line {line_num} ('{study_id}'), column '{header[col_idx]}': {e}")
