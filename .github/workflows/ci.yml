@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ master, main ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test-and-audit:
     runs-on: ubuntu-latest
@@ -44,7 +48,7 @@ jobs:
       run: |
         node -e "const fs=require('fs'); const html=fs.readFileSync('web/index.html','utf8'); const match=html.match(/<script>([\\s\\S]*?)<\\/script>/); if(!match)throw Error('Browser script missing'); new Function(match[1]);"
 
-    - name: Security SAST & Zero-PHI Audit
+    - name: Audit integrity and identifier-guard sanity check
       env:
         AUDIT_SECRET_KEY: "test-audit-secret-key-for-ci-pipeline-only-2026"
       run: |
