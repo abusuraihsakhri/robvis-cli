@@ -40,6 +40,10 @@ jobs:
         python -m robvis_cli.cli summary -i sample_robins_i.csv --weighted -o /tmp/robvis-summary.svg
         python -c "import xml.etree.ElementTree as ET; ET.parse('/tmp/robvis-traffic.svg'); ET.parse('/tmp/robvis-summary.svg')"
 
+    - name: Check browser application JavaScript syntax
+      run: |
+        node -e "const fs=require('fs'); const html=fs.readFileSync('web/index.html','utf8'); const match=html.match(/<script>([\\s\\S]*?)<\\/script>/); if(!match)throw Error('Browser script missing'); new Function(match[1]);"
+
     - name: Security SAST & Zero-PHI Audit
       env:
         AUDIT_SECRET_KEY: "test-audit-secret-key-for-ci-pipeline-only-2026"
