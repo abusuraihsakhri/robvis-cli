@@ -5,6 +5,8 @@ Supports automated tool detection, alias matching, auto-overall computation, and
 
 import csv
 import io
+import math
+import os
 from typing import Dict, List, Optional, Tuple, Union
 from .models import (
     Judgment,
@@ -27,11 +29,17 @@ def _compute_default_overall(judgments: Dict[str, Judgment]) -> Judgment:
     values = list(judgments.values())
     if any(j == Judgment.CRITICAL for j in values):
         return Judgment.CRITICAL
+    if any(j == Judgment.SERIOUS for j in values):
+        return Judgment.SERIOUS
     if any(j == Judgment.HIGH for j in values):
         return Judgment.HIGH
+    if any(j == Judgment.NO_INFO for j in values):
+        return Judgment.NO_INFO
+    if any(j == Judgment.MODERATE for j in values):
+        return Judgment.MODERATE
     if any(j == Judgment.SOME_CONCERNS for j in values):
         return Judgment.SOME_CONCERNS
-    if all(j == Judgment.LOW for j in values):
+    if values and all(j == Judgment.LOW for j in values):
         return Judgment.LOW
     return Judgment.NO_INFO
 
@@ -50,13 +58,18 @@ def parse_rob_csv(
     - Weight (optional; float representing relative study weight)
     - Subgroup (optional)
     """
-    if isinstance(file_or_path, str) and "\n" not in file_or_path and not file_or_path.startswith("Study"):
-        with open(file_or_path, mode="r", encoding="utf-8-sig") as f:
-            content = f.read()
-    elif isinstance(file_or_path, io.StringIO):
+    if isinstance(file_or_path, io.StringIO):
         content = file_or_path.getvalue()
+    elif isinstance(file_or_path, (str, os.PathLike)):
+        source = os.fspath(file_or_path)
+        if isinstance(file_or_path, os.PathLike) or ("\n" not in source and "," not in source and "\r" not in source):
+            with open(source, mode="r", encoding="utf-8-sig") as f:
+                content = f.read()
+        else:
+            content = source
     else:
-        content = str(file_or_path)
+        raise TypeError("Expected CSV text, a file path, or io.StringIO")
+    content = content.lstrip("\ufeff")
 
     reader = csv.reader(io.StringIO(content))
     rows = [r for r in reader if any(cell.strip() for cell in r)]
@@ -64,6 +77,10 @@ def parse_rob_csv(
         raise ValueError("CSV input is empty.")
 
     header = [h.strip() for h in rows[0]]
+    if any(not name for name in header):
+        raise ValueError("CSV column headers must not be empty.")
+    if len({name.casefold() for name in header}) != len(header):
+        raise ValueError("CSV column headers must be unique.")
     if len(header) < 2:
         raise ValueError(f"Invalid header with fewer than 2 columns: {header}")
 
@@ -99,6 +116,8 @@ def parse_rob_csv(
 
     if not domain_cols:
         raise ValueError("No risk of bias domain columns found in CSV header.")
+    if len(rows) < 2:
+        raise ValueError("CSV must contain at least one study assessment.")
 
     # Determine tool type and domain titles
     num_domains = len(domain_cols)
@@ -127,8 +146,8 @@ def parse_rob_csv(
     # Parse rows
     assessments: List[StudyAssessment] = []
     for line_num, row in enumerate(rows[1:], start=2):
-        if not row or not any(cell.strip() for cell in row):
-            continue
+        if len(row) != len(header):
+            raise ValueError(f"Line {line_num}: expected {len(header)} columns, got {len(row)}.")
         
         study_id = row[study_col_idx].strip() if study_col_idx < len(row) else f"Study {line_num-1}"
         if not study_id:
@@ -138,7 +157,18 @@ def parse_rob_csv(
         for (col_idx, _), (dom_key, _) in zip(domain_cols, domains_catalog):
             cell_val = row[col_idx].strip() if col_idx < len(row) else ""
             try:
-                j = Judgment.from_str(cell_val)
+                if tool_type == ToolType.ROBINS_I:
+                    normalized = cell_val.strip().lower()
+                    if normalized in ("moderate", "m"):
+                        j = Judgment.MODERATE
+                    elif normalized in ("serious",):
+                        j = Judgment.SERIOUS
+                    elif normalized in ("some concerns", "high", "sc", "h"):
+                        raise ValueError(f"'{cell_val}' is not a ROBINS-I judgment; use Moderate or Serious")
+                    else:
+                        j = Judgment.from_str(cell_val)
+                else:
+                    j = Judgment.from_str(cell_val)
             except ValueError as e:
                 raise ValueError(f"Line {line_num} ('{study_id}'), column '{header[col_idx]}': {e}")
             judgments[dom_key] = j
@@ -147,20 +177,28 @@ def parse_rob_csv(
         if overall_col_idx is not None and overall_col_idx < len(row) and row[overall_col_idx].strip():
             try:
                 overall_j = Judgment.from_str(row[overall_col_idx].strip())
-            except ValueError:
-                overall_j = _compute_default_overall(judgments)
+            except ValueError as e:
+                raise ValueError(f"Line {line_num} ('{study_id}'), Overall: {e}")
+            if tool_type == ToolType.ROBINS_I:
+                if row[overall_col_idx].strip().lower() in ("moderate", "m"):
+                    overall_j = Judgment.MODERATE
+                elif row[overall_col_idx].strip().lower() == "serious":
+                    overall_j = Judgment.SERIOUS
+                elif overall_j in (Judgment.SOME_CONCERNS, Judgment.HIGH):
+                    raise ValueError(f"Line {line_num} ('{study_id}'): invalid ROBINS-I Overall judgment")
         else:
             overall_j = _compute_default_overall(judgments)
 
         # Weight
         weight = 1.0
-        if weight_col_idx is not None and weight_col_idx < len(row):
+        if weight_col_idx is not None:
             w_str = row[weight_col_idx].strip()
-            if w_str:
-                try:
-                    weight = max(0.001, float(w_str))
-                except ValueError:
-                    weight = 1.0
+            try:
+                weight = float(w_str)
+            except ValueError:
+                raise ValueError(f"Line {line_num} ('{study_id}'): invalid Weight '{w_str}'")
+            if not math.isfinite(weight) or weight <= 0:
+                raise ValueError(f"Line {line_num} ('{study_id}'): Weight must be positive and finite")
 
         # Subgroup
         subgroup = None
@@ -183,5 +221,6 @@ def parse_rob_csv(
         tool_type=tool_type,
         domains=domains_catalog,
         assessments=assessments,
-        include_overall=(overall_col_idx is not None or True),
+        # QUADAS-2 does not prescribe an aggregate overall judgment.
+        include_overall=(overall_col_idx is not None or tool_type != ToolType.QUADAS_2),
     )
