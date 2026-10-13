@@ -91,3 +91,38 @@ def test_audit_trail_getter_is_defensive():
     trail.log("actor", "test", "event", {"safe": True})
     trail.get_trail()[0]["actor"] = "attacker"
     assert trail.verify_integrity()
+
+
+def test_batch_boolean_values_and_missing_identifiers(tmp_path):
+    from cli import main as audit_main
+    source = tmp_path / "batch.csv"
+    output = tmp_path / "out.csv"
+    source.write_text(
+        "task_id,target_identifier,primary_metric,secondary_metric,is_critical_flag\n"
+        "T1,K1,10,1,false\nT2,K2,10,1,true\n",
+        encoding="utf-8",
+    )
+    assert audit_main(["batch", "-i", str(source), "-o", str(output)]) == 0
+    import csv
+    with output.open(encoding="utf-8", newline="") as data:
+        rows = list(csv.DictReader(data))
+    assert rows[0]["overall_urgency"] == "ROUTINE"
+    assert rows[1]["overall_urgency"] == "CRITICAL_STAT_PANIC"
+
+
+def test_batch_bad_flags_cannot_be_coerced_to_true(tmp_path):
+    from cli import main as audit_main
+    source = tmp_path / "batch.csv"
+    source.write_text(
+        "task_id,target_identifier,primary_metric,is_critical_flag\n"
+        "T1,K1,10,possibly\n", encoding="utf-8"
+    )
+    assert audit_main(["batch", "-i", str(source), "-o", str(tmp_path / "out.csv")]) == 1
+
+
+def test_mock_provider_never_claims_verified_clinical_analysis():
+    from agents.llm_factory import LLMFactory
+    response = LLMFactory.create("mock").invoke("hello")
+    assert "No external model or clinical evaluation" in response
+    with pytest.raises(ValueError, match="Only the deterministic mock"):
+        LLMFactory.create("openai")
