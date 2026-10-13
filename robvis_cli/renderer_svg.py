@@ -39,7 +39,7 @@ def render_traffic_light_svg(
 
     header_height = 80
     matrix_height = num_studies * row_height
-    legend_height = 50 + (num_domains * 22) + 60
+    legend_height = 50 + (num_domains * 22) + 100
     total_height = header_height + matrix_height + legend_height + 40
 
     svg_parts = []
@@ -152,11 +152,12 @@ def render_traffic_light_svg(
     y_key = y_legend_start + 26
     svg_parts.append(f'<text x="24" y="{y_key}" class="legend-title">Judgments:</text>')
     
-    key_items = [
-        (Judgment.LOW, "Low risk"),
-        (Judgment.SOME_CONCERNS, "Some concerns"),
-        (Judgment.HIGH, "High risk"),
-    ]
+    if meta.tool_type == "ROBINS_I":
+        key_items = [(Judgment.LOW, "Low risk"), (Judgment.MODERATE, "Moderate risk"),
+                     (Judgment.SERIOUS, "Serious risk")]
+    else:
+        key_items = [(Judgment.LOW, "Low risk"), (Judgment.SOME_CONCERNS, "Some concerns"),
+                     (Judgment.HIGH, "High risk")]
     # Include Critical if present in data or ROBINS-I
     has_crit = any(
         a.overall == Judgment.CRITICAL or any(j == Judgment.CRITICAL for j in a.judgments.values())
@@ -167,21 +168,24 @@ def render_traffic_light_svg(
     key_items.append((Judgment.NO_INFO, "No info"))
 
     x_cursor = 110
-    for j_enum, j_label in key_items:
+    for idx, (j_enum, j_label) in enumerate(key_items):
+        if idx == 3:
+            x_cursor = 110
+        key_row_y = y_key + (22 if idx >= 3 else 0)
         svg_parts.append(
-            f'<circle cx="{x_cursor}" cy="{y_key - 4}" r="8" fill="{j_enum.color_hex}" stroke="#ffffff" stroke-width="1"/>'
+            f'<circle cx="{x_cursor}" cy="{key_row_y - 4}" r="8" fill="{j_enum.color_hex}" stroke="#ffffff" stroke-width="1"/>'
         )
         if show_symbols and j_enum.symbol != " ":
             svg_parts.append(
-                f'<text x="{x_cursor}" y="{y_key - 4}" class="symbol" style="font-size:9px;" pointer-events="none">{j_enum.symbol}</text>'
+                f'<text x="{x_cursor}" y="{key_row_y - 4}" class="symbol" style="font-size:9px;" pointer-events="none">{j_enum.symbol}</text>'
             )
         svg_parts.append(
-            f'<text x="{x_cursor + 14}" y="{y_key}" class="legend-item">{_escape(j_label)}</text>'
+            f'<text x="{x_cursor + 14}" y="{key_row_y}" class="legend-item">{_escape(j_label)}</text>'
         )
         x_cursor += len(j_label) * 8 + 40
 
     # Domain Glossary
-    y_glossary = y_key + 28
+    y_glossary = y_key + 52
     svg_parts.append(f'<text x="24" y="{y_glossary}" class="legend-title">Domains ({meta.tool_type.value}):</text>')
     
     for i, (key, title_text) in enumerate(meta.domains):
@@ -259,14 +263,12 @@ def render_summary_bar_svg(
         f'<line x1="{chart_x_start}" y1="{header_height + plot_height + 4}" x2="{chart_x_start + chart_width}" y2="{header_height + plot_height + 4}" class="axis-line" />'
     )
 
-    # Categories to compute in stack order: Low -> Some concerns -> High -> Critical -> No Info
-    judgment_order = [
-        Judgment.LOW,
-        Judgment.SOME_CONCERNS,
-        Judgment.HIGH,
-        Judgment.CRITICAL,
-        Judgment.NO_INFO,
-    ]
+    # Preserve each tool's own ordinal judgment vocabulary.
+    judgment_order = ([Judgment.LOW, Judgment.MODERATE, Judgment.SERIOUS,
+                       Judgment.CRITICAL, Judgment.NO_INFO]
+                      if meta.tool_type == "ROBINS_I" else
+                      [Judgment.LOW, Judgment.SOME_CONCERNS, Judgment.HIGH,
+                       Judgment.CRITICAL, Judgment.NO_INFO])
 
     total_weight = sum(a.weight if weighted else 1.0 for a in meta.assessments)
     if total_weight <= 0:
@@ -318,16 +320,18 @@ def render_summary_bar_svg(
         f'<text x="{total_width/2 - 190:.1f}" y="{y_legend}" class="legend-title">Risk of bias judgments:</text>'
     )
 
-    legend_keys = [
-        (Judgment.LOW, "Low risk"),
-        (Judgment.SOME_CONCERNS, "Some concerns"),
-        (Judgment.HIGH, "High risk"),
-    ]
-    if any(a.overall == Judgment.CRITICAL for a in meta.assessments) or meta.tool_type == "ROBINS_I":
+    if meta.tool_type == "ROBINS_I":
+        legend_keys = [(Judgment.LOW, "Low risk"), (Judgment.MODERATE, "Moderate risk"),
+                       (Judgment.SERIOUS, "Serious risk")]
+    else:
+        legend_keys = [(Judgment.LOW, "Low risk"), (Judgment.SOME_CONCERNS, "Some concerns"),
+                       (Judgment.HIGH, "High risk")]
+    if (any(a.overall == Judgment.CRITICAL or Judgment.CRITICAL in a.judgments.values()
+            for a in meta.assessments) or meta.tool_type == "ROBINS_I"):
         legend_keys.append((Judgment.CRITICAL, "Critical risk"))
     legend_keys.append((Judgment.NO_INFO, "No information"))
 
-    x_leg_cursor = total_width/2 - 50
+    x_leg_cursor = 24
     for j_enum, label in legend_keys:
         svg_parts.append(
             f'<rect x="{x_leg_cursor}" y="{y_legend - 12}" width="14" height="14" fill="{j_enum.color_hex}" rx="2"/>'
