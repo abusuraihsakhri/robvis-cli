@@ -12,6 +12,8 @@ class Judgment(str, Enum):
     LOW = "Low"
     SOME_CONCERNS = "Some concerns"
     HIGH = "High"
+    MODERATE = "Moderate"
+    SERIOUS = "Serious"
     CRITICAL = "Critical"
     NO_INFO = "No information"
 
@@ -39,8 +41,10 @@ class Judgment(str, Enum):
             return "+"
         elif self == Judgment.SOME_CONCERNS:
             return "?"
-        elif self == Judgment.HIGH:
+        elif self in (Judgment.HIGH, Judgment.SERIOUS):
             return "−"
+        elif self == Judgment.MODERATE:
+            return "?"
         elif self == Judgment.CRITICAL:
             return "✕"
         else:
@@ -51,9 +55,9 @@ class Judgment(str, Enum):
         """Standard Cochrane / McGuinness color palette."""
         if self == Judgment.LOW:
             return "#4daf4a"  # Crisp Green
-        elif self == Judgment.SOME_CONCERNS:
+        elif self in (Judgment.SOME_CONCERNS, Judgment.MODERATE):
             return "#fdbf6f"  # Crisp Ochre/Yellow
-        elif self == Judgment.HIGH:
+        elif self in (Judgment.HIGH, Judgment.SERIOUS):
             return "#e41a1c"  # Crisp Crimson Red
         elif self == Judgment.CRITICAL:
             return "#6a3d9a"  # Dark Purple (ROBINS-I)

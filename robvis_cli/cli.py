@@ -11,16 +11,8 @@ from .renderer_svg import render_traffic_light_svg, render_summary_bar_svg
 
 
 def _validate_input_file(path: str) -> str:
-    """Validate input file exists and prevent path traversal."""
-    # Resolve to absolute path to prevent traversal
-    resolved = Path(path).resolve()
-
-    # Check for path traversal - ensure the resolved path is within allowed directories
-    # Allow any path that exists, but block suspicious patterns
-    suspicious_patterns = ["..", "~", "//"]
-    for pattern in suspicious_patterns:
-        if pattern in path and pattern != "..":  # ".." is handled by resolve()
-            raise ValueError(f"Invalid file path: contains suspicious pattern '{pattern}'")
+    """Validate an explicitly supplied local file path."""
+    resolved = Path(path).expanduser().resolve()
 
     if not resolved.exists():
         raise FileNotFoundError(f"Input file not found: {path}")
@@ -31,7 +23,7 @@ def _validate_input_file(path: str) -> str:
 
 def _validate_output_path(path: str) -> str:
     """Validate output file path and ensure directory exists."""
-    resolved = Path(path).resolve()
+    resolved = Path(path).expanduser().resolve()
     parent = resolved.parent
     if not parent.exists():
         raise FileNotFoundError(f"Output directory does not exist: {parent}")
@@ -133,32 +125,27 @@ def main(argv=None):
             print(f"Validation ERROR: {e}", file=sys.stderr)
             return 1
 
-    if args.command == "traffic-light":
-        meta = parse_rob_csv(input_path, tool_type=tool_enum)
-        svg_content = render_traffic_light_svg(
-            meta=meta,
-            title=args.title,
-            show_symbols=not args.no_symbols,
-            show_tooltips=not args.no_tooltips,
-        )
-        output_path = _validate_output_path(args.output)
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(svg_content)
-        print(f"Traffic light plot successfully created -> {output_path} ({len(meta.assessments)} studies, {len(meta.domains)} domains)")
-        return 0
-
-    if args.command == "summary":
-        meta = parse_rob_csv(input_path, tool_type=tool_enum)
-        svg_content = render_summary_bar_svg(
-            meta=meta,
-            title=args.title,
-            weighted=args.weighted,
-        )
-        output_path = _validate_output_path(args.output)
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(svg_content)
-        print(f"Summary bar plot successfully created -> {output_path} ({'weighted' if args.weighted else 'unweighted'})")
-        return 0
+    if args.command in ("traffic-light", "summary"):
+        try:
+            meta = parse_rob_csv(input_path, tool_type=tool_enum)
+            if args.command == "traffic-light":
+                svg_content = render_traffic_light_svg(
+                    meta=meta, title=args.title,
+                    show_symbols=not args.no_symbols,
+                    show_tooltips=not args.no_tooltips,
+                )
+            else:
+                svg_content = render_summary_bar_svg(meta=meta, title=args.title, weighted=args.weighted)
+            output_path = _validate_output_path(args.output)
+            if output_path == input_path:
+                raise ValueError("Output path must not overwrite the source CSV")
+            with open(output_path, "w", encoding="utf-8") as output_file:
+                output_file.write(svg_content)
+            print(f"{args.command} plot successfully created -> {output_path}")
+            return 0
+        except (ValueError, OSError) as exc:
+            print(f"{args.command} ERROR: {exc}", file=sys.stderr)
+            return 1
 
     return 0
 

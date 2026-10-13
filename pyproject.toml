@@ -13,7 +13,6 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Topic :: Scientific/Engineering :: Medical Science Apps.",
     "Topic :: Scientific/Engineering :: Visualization",
 ]
 requires-python = ">=3.9"
@@ -34,3 +33,7 @@ robvis = "robvis_cli.cli:main"
 [project.urls]
 Homepage = "https://github.com/abusuraihsakhri/robvis-cli"
 Repository = "https://github.com/abusuraihsakhri/robvis-cli.git"
+
+[tool.setuptools]
+packages = ["robvis_cli", "agents"]
+py-modules = ["cli", "robvis", "simulator", "enrichment"]

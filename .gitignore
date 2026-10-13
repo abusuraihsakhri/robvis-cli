@@ -11,6 +11,13 @@ venv/
 env/
 .venv/
 
+# Environment and private configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
 # IDE
 .vscode/
 .idea/

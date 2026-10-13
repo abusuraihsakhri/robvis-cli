@@ -1,0 +1,46 @@
+name: Deploy browser visualizer to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "web/**"
+      - "robvis_cli/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Stage standalone web application and Python modules
+        run: |
+          mkdir -p _site/robvis_cli
+          cp web/index.html _site/index.html
+          cp robvis_cli/{__init__,models,parser,renderer_svg}.py _site/robvis_cli/
+          touch _site/.nojekyll
+          python - <<'PY'
+          from pathlib import Path
+          for name in ('index.html','robvis_cli/__init__.py','robvis_cli/models.py','robvis_cli/parser.py','robvis_cli/renderer_svg.py'):
+              assert (Path('_site') / name).is_file(), name
+          print('Browser static artifact verified')
+          PY
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
