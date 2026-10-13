@@ -3,6 +3,7 @@ Command Line Interface for Robvis Cli.
 """
 import argparse
 import csv
+import math
 import sys
 
 from agents.models import SystemTaskPayload
@@ -80,44 +81,59 @@ def main(argv=None):
         return 0
 
     if args.command == "batch":
-        with open(args.input, mode="r", encoding="utf-8-sig") as f:
-            reader = csv.DictReader(f)
-            fieldnames = list(reader.fieldnames or [])
-            rows = list(reader)
+        try:
+            return _run_batch(args.input, args.output)
+        except (OSError, ValueError) as exc:
+            print(f"Batch ERROR: {exc}", file=sys.stderr)
+            return 1
 
-        out_fields = fieldnames + ["overall_urgency", "integrity_status", "total_alerts", "audit_hash"]
-        out_rows = []
-        for r in rows:
-            payload = SystemTaskPayload(
-                task_id=r.get("task_id", "TASK-01"),
-                target_identifier=r.get("target_identifier", "TARGET-01"),
-                primary_metric=float(r.get("primary_metric", 15.0)),
-                secondary_metric=float(r.get("secondary_metric", 5.0)),
-                status_descriptor=r.get("status_descriptor", "NOMINAL"),
-                is_critical_flag=bool(r.get("is_critical_flag", False)),
-            )
-            dossier = supervisor.process_task(payload)
-            row_dict = dict(r)
-            row_dict["overall_urgency"] = dossier.overall_urgency.value
-            row_dict["integrity_status"] = dossier.integrity_status.value
-            row_dict["total_alerts"] = dossier.total_alerts
-            row_dict["audit_hash"] = dossier.audit_hash
-            out_rows.append(row_dict)
+    return 0
 
-        with open(args.output, mode="w", encoding="utf-8", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=out_fields)
-            writer.writeheader()
-            writer.writerows(out_rows)
-        print(f"Processed {len(out_rows)} records -> {args.output}")
-        return 0
+
+def _run_batch(input_path: str, output_path: str):
+    with open(input_path, mode="r", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+        fieldnames = list(reader.fieldnames or [])
+        rows = list(reader)
+
+    out_fields = list(dict.fromkeys(fieldnames + ["overall_urgency", "integrity_status", "total_alerts", "audit_hash"]))
+    out_rows = []
+    for index, r in enumerate(rows, start=2):
+        flag = str(r.get("is_critical_flag") or "false").strip().lower()
+        if flag not in ("true", "false", "1", "0", "yes", "no"):
+            raise ValueError(f"Line {index}: invalid is_critical_flag value")
+        primary = float(r.get("primary_metric") or 15.0)
+        secondary = float(r.get("secondary_metric") or 5.0)
+        if not math.isfinite(primary) or not math.isfinite(secondary):
+            raise ValueError(f"Line {index}: metrics must be finite")
+        payload = SystemTaskPayload(
+            task_id=r.get("task_id", "TASK-01"),
+            target_identifier=r.get("target_identifier", "TARGET-01"),
+            primary_metric=primary,
+            secondary_metric=secondary,
+            status_descriptor=r.get("status_descriptor", "NOMINAL"),
+            is_critical_flag=flag in ("true", "1", "yes"),
+        )
+        dossier = supervisor.process_task(payload)
+        row_dict = dict(r)
+        row_dict["overall_urgency"] = dossier.overall_urgency.value
+        row_dict["integrity_status"] = dossier.integrity_status.value
+        row_dict["total_alerts"] = dossier.total_alerts
+        row_dict["audit_hash"] = dossier.audit_hash
+        out_rows.append(row_dict)
+
+    with open(output_path, mode="w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=out_fields)
+        writer.writeheader()
+        writer.writerows(out_rows)
+    print(f"Processed {len(out_rows)} records -> {output_path}")
+    return 0
 
     if args.command == "serve":
-        import uvicorn
-        from agents.api import app
-        print(f"Starting Robvis Cli API server on http://{args.host}:{args.port}")
-        uvicorn.run(app, host=args.host, port=args.port)
-        return 0
-
+    import uvicorn
+    from agents.api import app
+    print(f"Starting Robvis Cli API server on http://{args.host}:{args.port}")
+    uvicorn.run(app, host=args.host, port=args.port)
     return 0
 
 
