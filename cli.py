@@ -87,8 +87,6 @@ def main(argv=None):
         uvicorn.run(app, host=args.host, port=args.port)
         return 0
 
-    return 0
-
     if args.command == "batch":
         try:
             return _run_batch(args.input, args.output)
