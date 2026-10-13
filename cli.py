@@ -3,11 +3,7 @@ Command Line Interface for Robvis Cli.
 """
 import argparse
 import csv
-import os
 import sys
-
-# Set default audit key for CLI if not set
-os.environ.setdefault("AUDIT_SECRET_KEY", "cli-audit-key-for-local-use-only")
 
 from agents.models import SystemTaskPayload
 from agents.supervisor import SystemSupervisor
