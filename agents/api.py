@@ -1,7 +1,9 @@
 """
 FastAPI REST API Server for Robvis Cli.
 """
-from fastapi import FastAPI, HTTPException
+import hmac
+import os
+from fastapi import FastAPI, HTTPException, Header
 from pydantic import BaseModel
 from .base import AuditLogger
 from .models import SystemTaskPayload
@@ -50,5 +52,9 @@ def api_chat(req: ChatRequest):
 
 
 @app.get("/api/audit/logs")
-def api_audit_logs():
+def api_audit_logs(x_admin_token: str = Header(default="")):
+    """Audit identifiers and hash-chain metadata must not be public."""
+    expected = os.environ.get("AUDIT_ADMIN_TOKEN")
+    if not expected or not hmac.compare_digest(x_admin_token, expected):
+        raise HTTPException(status_code=403, detail="Access denied")
     return {"audit_trail": AuditLogger.get_trail(), "verified": AuditLogger.verify_integrity()}
