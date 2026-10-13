@@ -2,12 +2,13 @@
 Distributed Component High-Throughput Traffic & Stress Testing Simulator for Robvis Cli.
 """
 import os
+import secrets
 import time
 import random
 import sys
 
-# Set default audit key for simulator if not set
-os.environ.setdefault("AUDIT_SECRET_KEY", "simulator-audit-key-for-testing-only")
+# Simulation-only ephemeral key; never reuse a predictable fixed signing secret.
+os.environ.setdefault("AUDIT_SECRET_KEY", secrets.token_hex(32))
 
 from agents.models import SystemTaskPayload
 from agents.supervisor import SystemSupervisor
