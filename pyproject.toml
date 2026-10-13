@@ -33,3 +33,7 @@ robvis = "robvis_cli.cli:main"
 [project.urls]
 Homepage = "https://github.com/abusuraihsakhri/robvis-cli"
 Repository = "https://github.com/abusuraihsakhri/robvis-cli.git"
+
+[tool.setuptools]
+packages = ["robvis_cli", "agents"]
+py-modules = ["cli", "robvis", "simulator", "enrichment"]
