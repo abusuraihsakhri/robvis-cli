@@ -80,6 +80,15 @@ def main(argv=None):
         print(f"Audit Trail Blocks: {len(trail)} | Cryptographic Integrity Verified: {valid}")
         return 0
 
+    if args.command == "serve":
+        import uvicorn
+        from agents.api import app
+        print(f"Starting Robvis Cli API server on http://{args.host}:{args.port}")
+        uvicorn.run(app, host=args.host, port=args.port)
+        return 0
+
+    return 0
+
     if args.command == "batch":
         try:
             return _run_batch(args.input, args.output)
@@ -127,13 +136,6 @@ def _run_batch(input_path: str, output_path: str):
         writer.writeheader()
         writer.writerows(out_rows)
     print(f"Processed {len(out_rows)} records -> {output_path}")
-    return 0
-
-    if args.command == "serve":
-    import uvicorn
-    from agents.api import app
-    print(f"Starting Robvis Cli API server on http://{args.host}:{args.port}")
-    uvicorn.run(app, host=args.host, port=args.port)
     return 0
 
 
